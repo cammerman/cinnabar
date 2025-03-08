@@ -1,5 +1,3 @@
-using System.Numerics;
-
 namespace Cinnabar.GameMath;
 
 public class Vector1
