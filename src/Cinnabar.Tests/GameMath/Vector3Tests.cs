@@ -45,26 +45,28 @@ public class Vector3Tests
 
     [Theory]
     [MemberData(nameof(GetSingleVectors))]
-    public void Constructor(double x, double y, double z)
+    public void Constructor(float x, float y, float z)
     {
         var v = new Vector3(x, y, z);
         Assert.Equal(x, v.X);
         Assert.Equal(y, v.Y);
+        Assert.Equal(z, v.Z);
     }
 
     [Theory]
     [MemberData(nameof(GetSingleVectors))]
-    public void Negate(double x, double y, double z)
+    public void Negate(float x, float y, float z)
     {
         var v = new Vector3(x, y, z);
         var result = -v;
         Assert.Equal(-x, result.X);
         Assert.Equal(-y, result.Y);
+        Assert.Equal(-z, result.Z);
     }
 
     [Theory]
     [MemberData(nameof(GetVectorPairs))]
-    public void Add(double x1, double y1, double z1, double x2, double y2, double z2)
+    public void Add(float x1, float y1, float z1, float x2, float y2, float z2)
     {
         var v1 = new Vector3(x1, y1, z1);
         var v2 = new Vector3(x2, y2, z2);
@@ -73,11 +75,12 @@ public class Vector3Tests
 
         Assert.Equal(v1.X + v2.X, result.X);
         Assert.Equal(v1.Y + v2.Y, result.Y);
+        Assert.Equal(v1.Z + v2.Z, result.Z);
     }
 
     [Theory]
     [MemberData(nameof(GetVectorPairs))]
-    public void Subtract(double x1, double y1, double z1, double x2, double y2, double z2)
+    public void Subtract(float x1, float y1, float z1, float x2, float y2, float z2)
     {
         var v1 = new Vector3(x1, y1, z1);
         var v2 = new Vector3(x2, y2, z2);
@@ -86,11 +89,12 @@ public class Vector3Tests
 
         Assert.Equal(v1.X - v2.X, result.X);
         Assert.Equal(v1.Y - v2.Y, result.Y);
+        Assert.Equal(v1.Z - v2.Z, result.Z);
     }
 
     [Theory]
     [MemberData(nameof(GetVectorScalarPairs))]
-    public void MultiplyVectorByScalar(double x, double y, double z, double s)
+    public void MultiplyVectorByScalar(float x, float y, float z, float s)
     {
         var v = new Vector3(x, y, z);
 
@@ -98,11 +102,12 @@ public class Vector3Tests
 
         Assert.Equal(x * s, result.X);
         Assert.Equal(y * s, result.Y);
+        Assert.Equal(z * s, result.Z);
     }
 
     [Theory]
     [MemberData(nameof(GetVectorScalarPairs))]
-    public void MultiplyScalarByVector(double s, double x, double y, double z)
+    public void MultiplyScalarByVector(float s, float x, float y, float z)
     {
         var v = new Vector3(x, y, z);
 
@@ -110,11 +115,12 @@ public class Vector3Tests
 
         Assert.Equal(x * s, result.X);
         Assert.Equal(y * s, result.Y);
+        Assert.Equal(z * s, result.Z);
     }
 
     [Theory]
     [MemberData(nameof(GetVectorScalarPairs))]
-    public void DivideVectorByScalar(double x, double y, double z, double s)
+    public void DivideVectorByScalar(float x, float y, float z, float s)
     {
         var v = new Vector3(x, y, z);
 
@@ -122,5 +128,6 @@ public class Vector3Tests
 
         Assert.Equal(x / s, result.X);
         Assert.Equal(y / s, result.Y);
+        Assert.Equal(z / s, result.Z);
     }
 }

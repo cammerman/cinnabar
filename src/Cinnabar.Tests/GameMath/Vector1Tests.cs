@@ -28,7 +28,7 @@ public class Vector1Tests
 
     [Theory]
     [MemberData(nameof(GetSingleVectors))]
-    public void Constructor(double x)
+    public void Constructor(float x)
     {
         var v = new Vector1(x);
         Assert.Equal(x, v.X);
@@ -36,7 +36,7 @@ public class Vector1Tests
 
     [Theory]
     [MemberData(nameof(GetSingleVectors))]
-    public void Negate(double x)
+    public void Negate(float x)
     {
         var v = new Vector1(x);
         var result = -v;
@@ -45,7 +45,7 @@ public class Vector1Tests
 
     [Theory]
     [MemberData(nameof(GetVectorPairs))]
-    public void Add(double x1, double x2)
+    public void Add(float x1, float x2)
     {
         var v1 = new Vector1(x1);
         var v2 = new Vector1(x2);
@@ -57,7 +57,7 @@ public class Vector1Tests
 
     [Theory]
     [MemberData(nameof(GetVectorPairs))]
-    public void Subtract(double x1, double x2)
+    public void Subtract(float x1, float x2)
     {
         var v1 = new Vector1(x1);
         var v2 = new Vector1(x2);
@@ -69,7 +69,7 @@ public class Vector1Tests
 
     [Theory]
     [MemberData(nameof(GetVectorPairs))]
-    public void MultiplyVectorByScalar(double x1, double x2)
+    public void MultiplyVectorByScalar(float x1, float x2)
     {
         var v1 = new Vector1(x1);
 
@@ -80,7 +80,7 @@ public class Vector1Tests
 
     [Theory]
     [MemberData(nameof(GetVectorPairs))]
-    public void MultiplyScalarByVector(double x1, double x2)
+    public void MultiplyScalarByVector(float x1, float x2)
     {
         var v1 = new Vector1(x1);
 
@@ -91,7 +91,7 @@ public class Vector1Tests
 
     [Theory]
     [MemberData(nameof(GetVectorPairs))]
-    public void DivideVectorByScalar(double x1, double x2)
+    public void DivideVectorByScalar(float x1, float x2)
     {
         var v1 = new Vector1(x1);
 

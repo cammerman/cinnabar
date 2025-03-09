@@ -45,7 +45,7 @@ public class Vector2Tests
 
     [Theory]
     [MemberData(nameof(GetSingleVectors))]
-    public void Constructor(double x, double y)
+    public void Constructor(float x, float y)
     {
         var v = new Vector2(x, y);
         Assert.Equal(x, v.X);
@@ -54,7 +54,7 @@ public class Vector2Tests
 
     [Theory]
     [MemberData(nameof(GetSingleVectors))]
-    public void Negate(double x, double y)
+    public void Negate(float x, float y)
     {
         var v = new Vector2(x, y);
         var result = -v;
@@ -64,7 +64,7 @@ public class Vector2Tests
 
     [Theory]
     [MemberData(nameof(GetVectorPairs))]
-    public void Add(double x1, double y1, double x2, double y2)
+    public void Add(float x1, float y1, float x2, float y2)
     {
         var v1 = new Vector2(x1, y1);
         var v2 = new Vector2(x2, y2);
@@ -77,7 +77,7 @@ public class Vector2Tests
 
     [Theory]
     [MemberData(nameof(GetVectorPairs))]
-    public void Subtract(double x1, double y1, double x2, double y2)
+    public void Subtract(float x1, float y1, float x2, float y2)
     {
         var v1 = new Vector2(x1, y1);
         var v2 = new Vector2(x2, y2);
@@ -90,7 +90,7 @@ public class Vector2Tests
 
     [Theory]
     [MemberData(nameof(GetVectorScalarPairs))]
-    public void MultiplyVectorByScalar(double x, double y, double s)
+    public void MultiplyVectorByScalar(float x, float y, float s)
     {
         var v = new Vector2(x, y);
 
@@ -102,7 +102,7 @@ public class Vector2Tests
 
     [Theory]
     [MemberData(nameof(GetVectorScalarPairs))]
-    public void MultiplyScalarByVector(double s, double x, double y)
+    public void MultiplyScalarByVector(float s, float x, float y)
     {
         var v = new Vector2(x, y);
 
@@ -114,7 +114,7 @@ public class Vector2Tests
 
     [Theory]
     [MemberData(nameof(GetVectorScalarPairs))]
-    public void DivideVectorByScalar(double x, double y, double s)
+    public void DivideVectorByScalar(float x, float y, float s)
     {
         var v = new Vector2(x, y);
 
