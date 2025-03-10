@@ -4,7 +4,7 @@ using System.Windows.Markup;
 
 namespace Cinnabar.GameMath;
 
-public struct Vector2: IVector<Vector2>
+public struct Vector2: IVector<Vector2>, IMatrix<Vector2>
 {
     private float _x;
     private float _y;
@@ -41,6 +41,10 @@ public struct Vector2: IVector<Vector2>
     public ReadOnlyCollection<float> Components => new float[] { _x, _y }.AsReadOnly();
 
     public int Dimension => 2;
+
+    public MatrixOrder Order => throw new NotImplementedException();
+
+    public float this[int column, int row] { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
     public float this[int index]
     {
@@ -101,6 +105,16 @@ public struct Vector2: IVector<Vector2>
         return new Vector2(
             _x / scalar,
             _y / scalar);
+    }
+
+    public Vector2 Negate()
+    {
+        throw new NotImplementedException();
+    }
+
+    public static Vector2 Zero()
+    {
+        throw new NotImplementedException();
     }
 
     public static Vector2 operator+(Vector2 self)

@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 
 namespace Cinnabar.GameMath;
 
-public struct Vector1: IVector<Vector1>
+public struct Vector1: IVector<Vector1>, IMatrix<Vector1>
 {
     private float _x;
 
@@ -17,6 +17,10 @@ public struct Vector1: IVector<Vector1>
     public ReadOnlyCollection<float> Components => new float[] { _x }.AsReadOnly();
 
     public int Dimension => 1;
+
+    public MatrixOrder Order => throw new NotImplementedException();
+
+    public float this[int column, int row] { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
     public float this[int index]
     {
@@ -60,6 +64,16 @@ public struct Vector1: IVector<Vector1>
     public Vector1 Divide(float scalar)
     {
         return new Vector1(this._x / scalar);
+    }
+
+    public Vector1 Negate()
+    {
+        throw new NotImplementedException();
+    }
+
+    public static Vector1 Zero()
+    {
+        throw new NotImplementedException();
     }
 
     public static Vector1 operator+(Vector1 self)

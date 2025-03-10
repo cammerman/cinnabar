@@ -2,7 +2,7 @@ using System.Collections.ObjectModel;
 
 namespace Cinnabar.GameMath;
 
-public struct Vector4: IVector<Vector4>
+public struct Vector4: IVector<Vector4>, IMatrix<Vector4>
 {
     private float _w;
     private float _x;
@@ -58,6 +58,10 @@ public struct Vector4: IVector<Vector4>
     public ReadOnlyCollection<float> Components => new float[] { _x, _y, _z, _w }.AsReadOnly();
 
     public int Dimension => 4;
+
+    public MatrixOrder Order => throw new NotImplementedException();
+
+    public float this[int column, int row] { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
     public float this[int index]
     {
@@ -135,6 +139,16 @@ public struct Vector4: IVector<Vector4>
             _x / scalar,
             _y / scalar,
             _z / scalar);
+    }
+
+    public Vector4 Negate()
+    {
+        throw new NotImplementedException();
+    }
+
+    public static Vector4 Zero()
+    {
+        throw new NotImplementedException();
     }
 
     public static Vector4 operator+(Vector4 self)

@@ -2,7 +2,7 @@ using System.Collections.ObjectModel;
 
 namespace Cinnabar.GameMath;
 
-public struct Vector3: IVector<Vector3>
+public struct Vector3: IVector<Vector3>, IMatrix<Vector3>
 {
     private float _x;
     private float _y;
@@ -49,6 +49,10 @@ public struct Vector3: IVector<Vector3>
 
     public int Dimension => 3;
 
+    public MatrixOrder Order => throw new NotImplementedException();
+
+    public float this[int column, int row] { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
     public float this[int index]
     {
         get {
@@ -85,6 +89,11 @@ public struct Vector3: IVector<Vector3>
         var squareSum = Math.FusedMultiplyAdd(_z, _z, firstSquare);
         var root = Math.ReciprocalSqrtEstimate(squareSum);
         _magnitude = root * squareSum;
+    }
+
+    public Vector3 Negate()
+    {
+        return new Vector3(-_x, -_y, -_z);
     }
 
     public Vector3 Add(Vector3 other)
@@ -126,7 +135,7 @@ public struct Vector3: IVector<Vector3>
 
     public static Vector3 operator-(Vector3 self)
     {
-        return new Vector3(-self.X, -self.Y, -self.Z);
+        return self.Negate();
     }
 
     public static Vector3 operator+(Vector3 self, Vector3 other)
@@ -152,5 +161,10 @@ public struct Vector3: IVector<Vector3>
     public static Vector3 operator/(Vector3 self, float other)
     {
         return self.Divide(other);
+    }
+
+    public static Vector3 Zero()
+    {
+        return new Vector3(0, 0, 0);
     }
 }
