@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 
 namespace Cinnabar.GameMath;
 
-public struct Vector1: IVector<Vector1>, IMatrix<Vector1>
+public struct Vector1: IVector<Vector1>, IMatrix<Vector1, Vector1, Vector1>
 {
     private float _x;
 
@@ -68,12 +68,34 @@ public struct Vector1: IVector<Vector1>, IMatrix<Vector1>
 
     public Vector1 Negate()
     {
-        throw new NotImplementedException();
+        return new Vector1(-_x);
     }
 
     public static Vector1 Zero()
     {
-        throw new NotImplementedException();
+        return new Vector1(0);
+    }
+
+    Vector1 IMatrix<Vector1, Vector1, Vector1>.Column(int column)
+    {
+        ArgumentOutOfRangeException.ThrowIfNotEqual(column, 0);
+        return new Vector1(_x);
+    }
+
+    Vector1 IMatrix<Vector1, Vector1, Vector1>.Row(int row)
+    {
+        ArgumentOutOfRangeException.ThrowIfNotEqual(row, 0);
+        return new Vector1(_x);
+    }
+
+    static Vector1 IMatrix<Vector1, Vector1, Vector1>.FromColumns(Vector1[] columns)
+    {
+        return new Vector1(columns[0].X);
+    }
+
+    static Vector1 IMatrix<Vector1, Vector1, Vector1>.FromRows(Vector1[] rows)
+    {
+        return new Vector1(rows[0].X);
     }
 
     public static Vector1 operator+(Vector1 self)

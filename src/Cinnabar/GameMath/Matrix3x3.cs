@@ -1,7 +1,7 @@
 namespace Cinnabar.GameMath;
 
 public class Matrix3x3 :
-    IMatrix<Matrix3x3>,
+    IMatrix<Matrix3x3, Vector3, Vector3>,
     ITransposableMatrix<Matrix3x3>,
     ISquareMatrix<Matrix3x3>
 {
@@ -157,5 +157,15 @@ public class Matrix3x3 :
             0, 1, 0,
             0, 0, 1
         );
+    }
+
+    public static Matrix3x3 FromColumns(Vector3[] columns)
+    {
+        return FromRows(columns[0], columns[1], columns[2]);
+    }
+
+    public static Matrix3x3 FromRows(Vector3[] rows)
+    {
+        return FromRows(rows[0], rows[1], rows[2]);
     }
 }

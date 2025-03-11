@@ -2,7 +2,7 @@ using System.Collections.ObjectModel;
 
 namespace Cinnabar.GameMath;
 
-public interface IVector
+public interface IVector: IMatrix
 {
     ReadOnlyCollection<float> Components { get; } 
     double Magnitude { get; }
@@ -10,7 +10,7 @@ public interface IVector
     float this[int index] { get; set; }
 }
 
-public interface IVector<TVector>: IVector
+public interface IVector<TVector>: IVector, IMatrix
     where TVector: IVector<TVector>
 {
     TVector Add(TVector other);
