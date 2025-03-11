@@ -2,153 +2,206 @@ using System.Collections;
 using System.Collections.ObjectModel;
 using System.Windows.Markup;
 
-namespace Cinnabar.GameMath;
-
-public struct Vector2: IVector<Vector2>, IMatrix<Vector2>
+namespace Cinnabar.GameMath
 {
-    private float _x;
-    private float _y;
-    private double _magnitude;
-    private bool _isMagnitudeDirty = true;
+    using IColumnMatrix = IMatrix<Vector2, Vector1, Vector2>;
+    using IRowMatrix = IMatrix<Vector2, Vector2, Vector1>;
 
-    public float X {
-        get => _x;
-        set {
-            _isMagnitudeDirty = value != _x;
-            _x = value;
-        }
-    }
+    public struct Vector2:
+        IVector<Vector2>,
+        IColumnMatrix,
+        IRowMatrix
+    {
+        private float _x;
+        private float _y;
+        private double _magnitude;
+        private bool _isMagnitudeDirty = true;
 
-    public float Y {
-        get => _y;
-        set {
-            _isMagnitudeDirty = value != _y;
-            _y = value;
-        }
-    }
-
-    public double Magnitude {
-        get {
-            if (_isMagnitudeDirty) {
-                UpdateMagnitude();
-                _isMagnitudeDirty = false;
+        public float X {
+            get => _x;
+            set {
+                _isMagnitudeDirty = value != _x;
+                _x = value;
             }
-
-            return _magnitude;
         }
-    }
 
-    public ReadOnlyCollection<float> Components => new float[] { _x, _y }.AsReadOnly();
-
-    public int Dimension => 2;
-
-    public MatrixOrder Order => throw new NotImplementedException();
-
-    public float this[int column, int row] { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
-    public float this[int index]
-    {
-        get {
-            return index switch {
-                0 => _x,
-                1 => _y,
-                _ => throw new IndexOutOfRangeException()
-            };
+        public float Y {
+            get => _y;
+            set {
+                _isMagnitudeDirty = value != _y;
+                _y = value;
+            }
         }
-        set {
-            if (index == 0) _x = value;
-            else if (index == 1) _y = value;
-            else throw new IndexOutOfRangeException();
+
+        public double Magnitude {
+            get {
+                if (_isMagnitudeDirty) {
+                    UpdateMagnitude();
+                    _isMagnitudeDirty = false;
+                }
+
+                return _magnitude;
+            }
         }
-    }
 
-    public Vector2(float x, float y)
-    {
-        _x = x;
-        _y = y;
-    }
+        public ReadOnlyCollection<float> Components => new float[] { _x, _y }.AsReadOnly();
 
-    public Vector2(Vector2 other)
-        :this(other.X, other.Y)
-    {}
+        public int Dimension => 2;
 
-    private void UpdateMagnitude()
-    {
-        var square = Math.FusedMultiplyAdd(_x, _x, _y * _y);
-        var root = Math.ReciprocalSqrtEstimate(square);
-        _magnitude = root * square;
-    }
+        public MatrixOrder IColumnMatrix.Order => throw new NotImplementedException();
 
-    public Vector2 Add(Vector2 other)
-    {
-        return new Vector2(
-            _x + other.X,
-            _y + other.Y);
-    }
+        public float this[int column, int row] { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
-    public Vector2 Subtract(Vector2 other)
-    {
-        return new Vector2(
-            _x - other.X,
-            _y - other.Y);
-    }
+        public float this[int index]
+        {
+            get {
+                return index switch {
+                    0 => _x,
+                    1 => _y,
+                    _ => throw new IndexOutOfRangeException()
+                };
+            }
+            set {
+                if (index == 0) _x = value;
+                else if (index == 1) _y = value;
+                else throw new IndexOutOfRangeException();
+            }
+        }
 
-    public Vector2 Multiply(float scalar)
-    {
-        return new Vector2(
-            _x * scalar,
-            _y * scalar);
-    }
+        public Vector2(float x, float y)
+        {
+            _x = x;
+            _y = y;
+        }
 
-    public Vector2 Divide(float scalar)
-    {
-        return new Vector2(
-            _x / scalar,
-            _y / scalar);
-    }
+        public Vector2(Vector2 other)
+            :this(other.X, other.Y)
+        {}
 
-    public Vector2 Negate()
-    {
-        throw new NotImplementedException();
-    }
+        private void UpdateMagnitude()
+        {
+            var square = Math.FusedMultiplyAdd(_x, _x, _y * _y);
+            var root = Math.ReciprocalSqrtEstimate(square);
+            _magnitude = root * square;
+        }
 
-    public static Vector2 Zero()
-    {
-        throw new NotImplementedException();
-    }
+        public Vector2 Add(Vector2 other)
+        {
+            return new Vector2(
+                _x + other.X,
+                _y + other.Y);
+        }
 
-    public static Vector2 operator+(Vector2 self)
-    {
-        return new Vector2(self.X, self.Y);
-    }
+        public Vector2 Subtract(Vector2 other)
+        {
+            return new Vector2(
+                _x - other.X,
+                _y - other.Y);
+        }
 
-    public static Vector2 operator-(Vector2 self)
-    {
-        return new Vector2(-self.X, -self.Y);
-    }
+        public Vector2 Multiply(float scalar)
+        {
+            return new Vector2(
+                _x * scalar,
+                _y * scalar);
+        }
 
-    public static Vector2 operator+(Vector2 self, Vector2 other)
-    {
-        return self.Add(other);
-    }
+        public Vector2 Divide(float scalar)
+        {
+            return new Vector2(
+                _x / scalar,
+                _y / scalar);
+        }
 
-    public static Vector2 operator-(Vector2 self, Vector2 other)
-    {
-        return self.Subtract(other);
-    }
+        public Vector2 Negate()
+        {
+            return new Vector2(-_x, -_y);
+        }
 
-    public static Vector2 operator*(Vector2 self, float other)
-    {
-        return self.Multiply(other);
-    }
+        public static Vector2 Zero()
+        {
+            return new Vector2(0, 0);
+        }
 
-    public static Vector2 operator*(float other, Vector2 self)
-    {
-        return self.Multiply(other);
-    }
+        Vector2 IColumnMatrix.Column(int column)
+        {
+            ArgumentOutOfRangeException.ThrowIfNotEqual(column, 0, nameof(column));
+            return new Vector2(this);
+        }
 
-    public static Vector2 operator/(Vector2 self, float other)
-    {
-        return self.Divide(other);
+        Vector1 IColumnMatrix.Row(int row)
+        {
+            return new Vector1(this[row]);
+        }
+
+        static Vector2 IColumnMatrix.FromColumns(Vector2[] columns)
+        {
+            if (columns.Length == 0) throw new ArgumentException("Column array is empty.", nameof(columns));
+            return new Vector2(columns[0]);
+        }
+
+        static Vector2 IColumnMatrix.FromRows(Vector1[] rows)
+        {
+             if (rows.Length < 2) throw new ArgumentException("Rows array has fewer elements than the matrix has rows.", nameof(rows));
+            return new Vector2(rows[0].X, rows[1].X);
+        }
+
+        Vector1 IRowMatrix.Column(int column)
+        {
+            return new Vector1(this[column]);
+        }
+
+        Vector2 IRowMatrix.Row(int row)
+        {
+            ArgumentOutOfRangeException.ThrowIfNotEqual(row, 0, nameof(row));
+            return new Vector2(this);
+        }
+
+        static Vector2 IRowMatrix.FromColumns(Vector1[] columns)
+        {
+            if (columns.Length < 2) throw new ArgumentException("Rows array has fewer elements than the matrix has rows.", nameof(columns));
+            return new Vector2(columns[0].X, columns[1].X);
+        }
+
+        static Vector2 IRowMatrix.FromRows(Vector2[] rows)
+        {
+            if (rows.Length == 0) throw new ArgumentException("Column array is empty.", nameof(rows));
+            return new Vector2(rows[0]);
+        }
+
+        public static Vector2 operator+(Vector2 self)
+        {
+            return new Vector2(self.X, self.Y);
+        }
+
+        public static Vector2 operator-(Vector2 self)
+        {
+            return new Vector2(-self.X, -self.Y);
+        }
+
+        public static Vector2 operator+(Vector2 self, Vector2 other)
+        {
+            return self.Add(other);
+        }
+
+        public static Vector2 operator-(Vector2 self, Vector2 other)
+        {
+            return self.Subtract(other);
+        }
+
+        public static Vector2 operator*(Vector2 self, float other)
+        {
+            return self.Multiply(other);
+        }
+
+        public static Vector2 operator*(float other, Vector2 self)
+        {
+            return self.Multiply(other);
+        }
+
+        public static Vector2 operator/(Vector2 self, float other)
+        {
+            return self.Divide(other);
+        }
     }
 }

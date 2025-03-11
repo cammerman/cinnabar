@@ -180,7 +180,7 @@ namespace Cinnabar.GameMath
         Vector3 IColumnMatrix.Column(int column)
         {
             ArgumentOutOfRangeException.ThrowIfNotEqual(column, 0, nameof(column));
-            return new Vector3(_x, _y, _x);
+            return new Vector3(_x, _y, _z);
         }
 
         Vector1 IColumnMatrix.Row(int row)
