@@ -12,6 +12,9 @@ namespace Cinnabar.GameMath
         IColumnMatrix,
         IRowMatrix
     {
+        private static readonly MatrixOrder _columnMatrixOrder = new MatrixOrder(2, 1);
+        private static readonly MatrixOrder _rowMatrixOrder = new MatrixOrder(1, 2);
+
         private float _x;
         private float _y;
         private double _magnitude;
@@ -48,9 +51,33 @@ namespace Cinnabar.GameMath
 
         public int Dimension => 2;
 
-        public MatrixOrder IColumnMatrix.Order => throw new NotImplementedException();
+        MatrixOrder IColumnMatrix.Order => _columnMatrixOrder;
 
-        public float this[int column, int row] { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        float IColumnMatrix.this[int column, int row] {
+            get {
+                ArgumentOutOfRangeException.ThrowIfNotEqual(column, 0, nameof(column));
+                return this[row];
+            }
+            
+            set {
+                ArgumentOutOfRangeException.ThrowIfNotEqual(column, 0, nameof(column));
+                this[row] = value;
+            }
+        }
+        
+        MatrixOrder IRowMatrix.Order => _rowMatrixOrder;
+
+        float IRowMatrix.this[int column, int row] {
+            get {
+                ArgumentOutOfRangeException.ThrowIfNotEqual(row, 0, nameof(row));
+                return this[column];
+            }
+            
+            set {
+                ArgumentOutOfRangeException.ThrowIfNotEqual(row, 0, nameof(row));
+                this[row] = value;
+            }
+        }
 
         public float this[int index]
         {

@@ -1,16 +1,17 @@
+using System.Runtime.CompilerServices;
+
 namespace Cinnabar.GameMath;
 
-public interface IMatrix
-{
-    MatrixOrder Order { get; }
-    float this[int column, int row] { get; set; }
-}
+public interface IMatrix {}
 
-public interface IMatrix<TMatrix, TRowVector, TColumnVector>: IMatrix
+public interface IMatrix<TMatrix, TRowVector, TColumnVector> : IMatrix
     where TMatrix: IMatrix<TMatrix, TRowVector, TColumnVector>
     where TRowVector : IVector<TRowVector>
     where TColumnVector : IVector<TColumnVector>
 {
+    MatrixOrder Order { get; }
+    float this[int column, int row] { get; set; }
+
     TColumnVector Column(int column);
     TRowVector Row(int row);
 
