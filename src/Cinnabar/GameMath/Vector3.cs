@@ -161,6 +161,11 @@ namespace Cinnabar.GameMath
                 _z / scalar);
         }
 
+        public float Dot(Vector3 other)
+        {
+            return this.X * other.X + this.Y * other.Y + this.Z * other.Z;
+        }
+
         public static Vector3 operator+(Vector3 self)
         {
             return new Vector3(self.X, self.Y, self.Z);

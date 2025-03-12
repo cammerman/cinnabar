@@ -66,6 +66,11 @@ public struct Vector1: IVector<Vector1>, IMatrix<Vector1, Vector1, Vector1>
         return new Vector1(this._x / scalar);
     }
 
+    public float Dot(Vector1 other)
+    {
+        return this.X * other.X;
+    }
+
     public Vector1 Negate()
     {
         return new Vector1(-_x);

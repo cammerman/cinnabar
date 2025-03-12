@@ -179,6 +179,11 @@ namespace Cinnabar.GameMath
                 _z / scalar);
         }
 
+        public float Dot(Vector4 other)
+        {
+            return this.W * other.W + this.X * other.X + this.Y * other.Y + this.Z * other.Z;
+        }
+
         public static Vector4 Zero()
         {
             return new Vector4(0, 0, 0, 0);

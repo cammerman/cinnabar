@@ -140,6 +140,11 @@ namespace Cinnabar.GameMath
                 _y / scalar);
         }
 
+        public float Dot(Vector2 other)
+        {
+            return this.X * other.X + this.Y * other.Y;
+        }
+
         public Vector2 Negate()
         {
             return new Vector2(-_x, -_y);
