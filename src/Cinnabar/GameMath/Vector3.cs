@@ -223,18 +223,6 @@ namespace Cinnabar.GameMath
                 });
         }
 
-        static Vector3 IColumnMatrix.FromColumns(Vector3[] columns)
-        {
-            if (columns.Length == 0) throw new ArgumentException("Column array is empty.", nameof(columns));
-            return new Vector3(columns[0]);
-        }
-
-        static Vector3 IColumnMatrix.FromRows(Vector1[] rows)
-        {
-            if (rows.Length < 3) throw new ArgumentException("Rows array has fewer elements than the matrix has rows.", nameof(rows));
-            return new Vector3(rows[0].X, rows[1].X, rows[2].X);
-        }
-
         Vector1 IRowMatrix.Column(int column)
         {
             return new Vector1(
@@ -250,18 +238,6 @@ namespace Cinnabar.GameMath
         {
             ArgumentOutOfRangeException.ThrowIfNotEqual(row, 0, nameof(row));
             return new Vector3(_x, _y, _x);
-        }
-
-        static Vector3 IRowMatrix.FromColumns(Vector1[] columns)
-        {
-            if (columns.Length < 3) throw new ArgumentException("Rows array has fewer elements than the matrix has rows.", nameof(columns));
-            return new Vector3(columns[0].X, columns[1].X, columns[2].X);
-        }
-
-        static Vector3 IRowMatrix.FromRows(Vector3[] rows)
-        {
-            if (rows.Length == 0) throw new ArgumentException("Column array is empty.", nameof(rows));
-            return new Vector3(rows[0]);
         }
     }
 }

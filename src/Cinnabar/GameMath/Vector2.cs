@@ -166,18 +166,6 @@ namespace Cinnabar.GameMath
             return new Vector1(this[row]);
         }
 
-        static Vector2 IColumnMatrix.FromColumns(Vector2[] columns)
-        {
-            if (columns.Length == 0) throw new ArgumentException("Column array is empty.", nameof(columns));
-            return new Vector2(columns[0]);
-        }
-
-        static Vector2 IColumnMatrix.FromRows(Vector1[] rows)
-        {
-             if (rows.Length < 2) throw new ArgumentException("Rows array has fewer elements than the matrix has rows.", nameof(rows));
-            return new Vector2(rows[0].X, rows[1].X);
-        }
-
         Vector1 IRowMatrix.Column(int column)
         {
             return new Vector1(this[column]);
@@ -187,18 +175,6 @@ namespace Cinnabar.GameMath
         {
             ArgumentOutOfRangeException.ThrowIfNotEqual(row, 0, nameof(row));
             return new Vector2(this);
-        }
-
-        static Vector2 IRowMatrix.FromColumns(Vector1[] columns)
-        {
-            if (columns.Length < 2) throw new ArgumentException("Rows array has fewer elements than the matrix has rows.", nameof(columns));
-            return new Vector2(columns[0].X, columns[1].X);
-        }
-
-        static Vector2 IRowMatrix.FromRows(Vector2[] rows)
-        {
-            if (rows.Length == 0) throw new ArgumentException("Column array is empty.", nameof(rows));
-            return new Vector2(rows[0]);
         }
 
         public static Vector2 operator+(Vector2 self)

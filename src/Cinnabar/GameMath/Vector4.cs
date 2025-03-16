@@ -206,19 +206,7 @@ namespace Cinnabar.GameMath
                     _ => throw new ArgumentOutOfRangeException(nameof(row))
                 });
         }
-
-        static Vector4 IColumnMatrix.FromColumns(Vector4[] columns)
-        {
-            if (columns.Length == 0) throw new ArgumentException("Column array is empty.", nameof(columns));
-            return new Vector4(columns[0]);
-        }
-
-        static Vector4 IColumnMatrix.FromRows(Vector1[] rows)
-        {
-            if (rows.Length < 3) throw new ArgumentException("Rows array has fewer elements than the matrix has rows.", nameof(rows));
-            return new Vector4(rows[0].X, rows[1].X, rows[2].X, rows[3].X);
-        }
-
+        
         Vector1 IRowMatrix.Column(int column)
         {
             return new Vector1(
@@ -235,18 +223,6 @@ namespace Cinnabar.GameMath
         {
             ArgumentOutOfRangeException.ThrowIfNotEqual(row, 0, nameof(row));
             return new Vector4(_w, _x, _y, _x);
-        }
-
-        static Vector4 IRowMatrix.FromColumns(Vector1[] columns)
-        {
-            if (columns.Length < 3) throw new ArgumentException("Rows array has fewer elements than the matrix has rows.", nameof(columns));
-            return new Vector4(columns[0].X, columns[1].X, columns[2].X, columns[3].X);
-        }
-
-        static Vector4 IRowMatrix.FromRows(Vector4[] rows)
-        {
-            if (rows.Length == 0) throw new ArgumentException("Column array is empty.", nameof(rows));
-            return new Vector4(rows[0]);
         }
 
         public static Vector4 operator+(Vector4 self)

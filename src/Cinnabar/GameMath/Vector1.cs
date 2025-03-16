@@ -5,6 +5,7 @@ namespace Cinnabar.GameMath;
 
 public struct Vector1: IVector<Vector1>, IMatrix<Vector1, Vector1, Vector1>
 {
+    private static readonly MatrixOrder _order = new MatrixOrder(1, 1);
     private float _x;
 
     public float X {
@@ -18,9 +19,29 @@ public struct Vector1: IVector<Vector1>, IMatrix<Vector1, Vector1, Vector1>
 
     public int Dimension => 1;
 
-    public MatrixOrder Order => throw new NotImplementedException();
+    public MatrixOrder Order => _order;
 
-    public float this[int column, int row] { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+    public float this[int column, int row]
+    {
+        get
+        {
+            if (column is 0 && row is 0)
+            {
+                return _x;
+            }
+
+            throw new IndexOutOfRangeException();
+        }
+        set
+        {
+            if (column is 0 && row is 0)
+            {
+                _x = value;
+                return;
+            }
+            else throw new IndexOutOfRangeException();
+        }
+    }
 
     public float this[int index]
     {
@@ -91,16 +112,6 @@ public struct Vector1: IVector<Vector1>, IMatrix<Vector1, Vector1, Vector1>
     {
         ArgumentOutOfRangeException.ThrowIfNotEqual(row, 0);
         return new Vector1(_x);
-    }
-
-    static Vector1 IMatrix<Vector1, Vector1, Vector1>.FromColumns(Vector1[] columns)
-    {
-        return new Vector1(columns[0].X);
-    }
-
-    static Vector1 IMatrix<Vector1, Vector1, Vector1>.FromRows(Vector1[] rows)
-    {
-        return new Vector1(rows[0].X);
     }
 
     public static Vector1 operator+(Vector1 self)

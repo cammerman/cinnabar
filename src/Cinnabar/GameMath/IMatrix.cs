@@ -30,6 +30,4 @@ public interface IMatrix<TMatrix, TRowVector, TColumnVector> : IMatrix
     public abstract static TMatrix operator/(TMatrix self, float scalar);
 
     public abstract static TMatrix Zero();
-    public abstract static TMatrix FromColumns(TColumnVector[] columns);
-    public abstract static TMatrix FromRows(TRowVector[] rows);
 }
