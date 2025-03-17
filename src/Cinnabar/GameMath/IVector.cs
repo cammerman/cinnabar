@@ -7,7 +7,7 @@ public interface IVector
     ReadOnlyCollection<float> Components { get; } 
     double Magnitude { get; }
     int Dimension { get; }
-    float this[int index] { get; set; }
+    float this[int index] { get; }
 }
 
 public interface IVector<TVector>: IVector

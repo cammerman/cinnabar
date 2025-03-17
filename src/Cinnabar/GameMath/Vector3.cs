@@ -65,11 +65,6 @@ namespace Cinnabar.GameMath
                 ArgumentOutOfRangeException.ThrowIfNotEqual(column, 0, nameof(column));
                 return this[row];
             }
-            
-            set {
-                ArgumentOutOfRangeException.ThrowIfNotEqual(column, 0, nameof(column));
-                this[row] = value;
-            }
         }
         
         MatrixOrder IRowMatrix.Order => _rowMatrixOrder;
@@ -78,11 +73,6 @@ namespace Cinnabar.GameMath
             get {
                 ArgumentOutOfRangeException.ThrowIfNotEqual(row, 0, nameof(row));
                 return this[column];
-            }
-            
-            set {
-                ArgumentOutOfRangeException.ThrowIfNotEqual(row, 0, nameof(row));
-                this[row] = value;
             }
         }
 

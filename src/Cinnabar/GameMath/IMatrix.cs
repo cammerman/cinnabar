@@ -10,7 +10,7 @@ public interface IMatrix<TMatrix, TRowVector, TColumnVector> : IMatrix
     where TColumnVector : IVector<TColumnVector>
 {
     MatrixOrder Order { get; }
-    float this[int column, int row] { get; set; }
+    float this[int column, int row] { get; }
 
     TColumnVector Column(int column);
     TRowVector Row(int row);

@@ -33,6 +33,15 @@ public class Vector1Tests
         Assert.Equal(x, v.X);
     }
 
+    [Theory]
+    [MemberData(nameof(GetSingleVectors))]
+    public void CopyConstructor(float x)
+    {
+        var v1 = new Vector1(x);
+        var v2 = new Vector1(v1);
+        Assert.Equal(x, v2.X);
+    }
+
     [Fact]
     public void Zero()
     {
@@ -52,6 +61,15 @@ public class Vector1Tests
     {
         var v = new Vector1(x);
         Assert.Equal(new MatrixOrder(1, 1), v.Order);
+    }
+
+    [Theory]
+    [MemberData(nameof(GetSingleVectors))]
+    public void UnaryPlus(float x)
+    {
+        var v = new Vector1(x);
+        var result = +v;
+        Assert.Equal(x, result.X);
     }
 
     [Theory]
