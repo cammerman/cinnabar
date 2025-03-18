@@ -1,5 +1,6 @@
 using System.Runtime.Serialization.Formatters;
 using System.Threading.Channels;
+using AutoFixture.Xunit2;
 using Cinnabar.GameMath;
 using Xunit;
 
@@ -56,7 +57,30 @@ public class Vector4Tests
 
     [Theory]
     [MemberData(nameof(GetSingleVectors))]
-    public void Negate(float x, float y, float z, float w)
+    public void CopyConstructor(float w, float x, float y, float z)
+    {
+        var v1 = new Vector4(w, x, y, z);
+        var v2 = new Vector4(v1);
+        Assert.Equal(x, v2.X);
+        Assert.Equal(y, v2.Y);
+        Assert.Equal(z, v2.Z);
+    }
+
+    [Theory]
+    [MemberData(nameof(GetSingleVectors))]
+    public void UnaryPlus(float w, float x, float y, float z)
+    {
+        var v = new Vector4(w, x, y, z);
+        var result = +v;
+        Assert.Equal(w, result.W);
+        Assert.Equal(x, result.X);
+        Assert.Equal(y, result.Y);
+        Assert.Equal(z, result.Z);
+    }
+
+    [Theory]
+    [MemberData(nameof(GetSingleVectors))]
+    public void Negate(float w, float x, float y, float z)
     {
         var v = new Vector4(w, x, y, z);
         var result = -v;
@@ -136,5 +160,133 @@ public class Vector4Tests
         Assert.Equal(x / s, result.X);
         Assert.Equal(y / s, result.Y);
         Assert.Equal(z / s, result.Z);
+    }
+
+    [Theory]
+    [MemberAutoData(nameof(GetVectorPairs))]
+    public void Dot(float w1, float x1, float y1, float z1, float w2, float x2, float y2, float z2)
+    {
+        var v1 = new Vector4(w1, x1, y1, z1);
+        var v2 = new Vector4(w2, x2, y2, z2);
+
+        var result = v1.Dot(v2);
+
+        Assert.Equal((w1 * w2) + (x1 * x2) + (y1 * y2) + (z1 * z2), result);
+    }
+
+    [Theory, AutoData]
+    public void Components(float w, float x, float y, float z)
+    {
+        var v = new Vector4(w, x, y, z);
+        var result = v.Components;
+
+        Assert.Equal(result, [w, x, y, z]);
+    }
+
+    [Theory, AutoData]
+    public void Magnitude(float w, float x, float y, float z)
+    {
+        var v = new Vector4(w, x, y, z);
+        var expected = Math.Sqrt(w * w + x * x + y * y + z * z);
+        Assert.Equal(
+            expected,
+            v.Magnitude,
+            0.001 * expected);
+    }
+
+    [Theory, AutoData]
+    public void VectorIndexer(float w, float x, float y, float z)
+    {
+        var v = new Vector4(w, x, y, z);
+        Assert.Equal(w, v[0]);
+        Assert.Equal(x, v[1]);
+        Assert.Equal(y, v[2]);
+        Assert.Equal(z, v[3]);
+    }
+
+    [Theory, AutoData]
+    public void VectorIndexer_Throws(float w, float x, float y, float z)
+    {
+        var v = new Vector4(w, x, y, z);
+        Assert.Throws<IndexOutOfRangeException>(() => v[5]);
+    }
+
+    [Theory, AutoData]
+    public void VectorIndexerSet(float y)
+    {
+        var v = Vector4.Zero();
+        v[1] = y;
+        Assert.Equal(y, v[1]);
+    }
+
+    [Theory, AutoData]
+    public void VectorIndexerSet_Throws(float x)
+    {
+        var v = Vector4.Zero();
+        Assert.Throws<IndexOutOfRangeException>(() => v[5] = x);
+    }
+
+    [Theory, AutoData]
+    public void MatrixIndexer1x4(float w, float x, float y, float z)
+    {
+        var v = new Vector4(w, x, y, z);
+        var m = v as IMatrix<Vector4, Vector1, Vector4>;
+        Assert.Equal(w, m[0, 0]);
+    }
+
+    [Theory, AutoData]
+    public void MatrixIndexer1x4_Throws(float w, float x, float y, float z)
+    {
+        var v = new Vector4(w, x, y, z);
+        var m = v as IMatrix<Vector4, Vector1, Vector4>;
+        Assert.Throws<ArgumentOutOfRangeException>(() => m[3, 2]);
+    }
+
+    [Theory, AutoData]
+    public void Matrix1x4_Column(float w, float x, float y, float z)
+    {
+        var v = new Vector4(w, x, y, z) as IMatrix<Vector4, Vector1, Vector4>;
+        var col = v.Column(0);
+        Assert.Equal([w, x, y, z], col.Components);
+    }
+
+    [Theory, AutoData]
+    public void Matrix1x4_Row(float w, float x, float y, float z)
+    {
+        var v = new Vector4(w, x, y, z) as IMatrix<Vector4, Vector1, Vector4>;
+        var row = v.Row(0);
+        Assert.Equal([w], row.Components);
+    }
+
+    [Theory, AutoData]
+    public void MatrixIndexer4x1(float w, float x, float y, float z)
+    {
+        var v = new Vector4(w, x, y, z);
+        var m = v as IMatrix<Vector4, Vector4, Vector1>;
+        Assert.Equal(w, m[0, 0]);
+    }
+
+    [Theory, AutoData]
+    public void MatrixIndexer4x1_Throws(float w, float x, float y, float z)
+    {
+        var v = new Vector4(w, x, y, z);
+        var m = v as IMatrix<Vector4, Vector4, Vector1>;
+        Assert.Throws<ArgumentOutOfRangeException>(() => m[3, 2]);
+    }
+
+    [Theory, AutoData]
+    public void Matrix4x1_Column(float w, float x, float y, float z)
+    {
+        var v = new Vector4(w, x, y, z) as IMatrix<Vector4, Vector4, Vector1>;
+        var col = v.Column(0);
+        Assert.Equal([w], col.Components);
+    }
+
+    [Theory, AutoData]
+    public void Matrix4x1_Row(float w, float x, float y, float z)
+    {
+        var v = new Vector4(w, x, y, z) as IMatrix<Vector4, Vector4, Vector1>;
+        var row = v.Row(0);
+        Assert.Equal([w, x, y, z], row.Components);
     }
 }

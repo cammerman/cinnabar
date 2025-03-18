@@ -64,7 +64,7 @@ namespace Cinnabar.GameMath
             }
         }
 
-        public ReadOnlyCollection<float> Components => new float[] { _x, _y, _z, _w }.AsReadOnly();
+        public ReadOnlyCollection<float> Components => new float[] { _w, _x, _y, _z }.AsReadOnly();
 
         public int Dimension => 4;
 
@@ -91,9 +91,9 @@ namespace Cinnabar.GameMath
             get {
                 return index switch {
                     0 => _w,
-                    2 => _x,
-                    3 => _y,
-                    4 => _z,
+                    1 => _x,
+                    2 => _y,
+                    3 => _z,
                     _ => throw new IndexOutOfRangeException()
                 };
             }
@@ -212,7 +212,7 @@ namespace Cinnabar.GameMath
         Vector4 IRowMatrix.Row(int row)
         {
             ArgumentOutOfRangeException.ThrowIfNotEqual(row, 0, nameof(row));
-            return new Vector4(_w, _x, _y, _x);
+            return new Vector4(_w, _x, _y, _z);
         }
 
         public static Vector4 operator+(Vector4 self)

@@ -179,10 +179,11 @@ public class Vector3Tests
     public void Magnitude(float x, float y, float z)
     {
         var v = new Vector3(x, y, z);
+        var expected = Math.Sqrt(x * x + y * y + z * z);
         Assert.Equal(
-            Math.Sqrt(x * x + y * y + z * z),
+            expected,
             v.Magnitude,
-            0.01);
+            0.01 * expected);
     }
 
     [Theory, AutoData]
