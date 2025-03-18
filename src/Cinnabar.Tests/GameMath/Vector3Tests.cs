@@ -1,5 +1,6 @@
 using System.Runtime.Serialization.Formatters;
 using System.Threading.Channels;
+using AutoFixture.Xunit2;
 using Cinnabar.GameMath;
 using Xunit;
 
@@ -51,6 +52,28 @@ public class Vector3Tests
         Assert.Equal(x, v.X);
         Assert.Equal(y, v.Y);
         Assert.Equal(z, v.Z);
+    }
+
+    [Theory]
+    [MemberData(nameof(GetSingleVectors))]
+    public void CopyConstructor(float x, float y, float z)
+    {
+        var v1 = new Vector3(x, y, z);
+        var v2 = new Vector3(v1);
+        Assert.Equal(x, v2.X);
+        Assert.Equal(y, v2.Y);
+        Assert.Equal(z, v2.Z);
+    }
+
+    [Theory]
+    [MemberData(nameof(GetSingleVectors))]
+    public void UnaryPlus(float x, float y, float z)
+    {
+        var v = new Vector3(x, y, z);
+        var result = +v;
+        Assert.Equal(x, result.X);
+        Assert.Equal(y, result.Y);
+        Assert.Equal(z, result.Z);
     }
 
     [Theory]
@@ -129,5 +152,130 @@ public class Vector3Tests
         Assert.Equal(x / s, result.X);
         Assert.Equal(y / s, result.Y);
         Assert.Equal(z / s, result.Z);
+    }
+
+    [Theory]
+    [MemberAutoData(nameof(GetVectorPairs))]
+    public void Dot(float x1, float y1, float z1, float x2, float y2, float z2)
+    {
+        var v1 = new Vector3(x1, y1, z1);
+        var v2 = new Vector3(x2, y2, z2);
+
+        var result = v1.Dot(v2);
+
+        Assert.Equal((x1 * x2) + (y1 * y2) + (z1 * z2), result);
+    }
+
+    [Theory, AutoData]
+    public void Components(float x, float y, float z)
+    {
+        var v = new Vector3(x, y, z);
+        var result = v.Components;
+
+        Assert.Equal(result, [x, y, z]);
+    }
+
+    [Theory, AutoData]
+    public void Magnitude(float x, float y, float z)
+    {
+        var v = new Vector3(x, y, z);
+        Assert.Equal(
+            Math.Sqrt(x * x + y * y + z * z),
+            v.Magnitude,
+            0.01);
+    }
+
+    [Theory, AutoData]
+    public void VectorIndexer(float x, float y, float z)
+    {
+        var v = new Vector3(x, y, z);
+        Assert.Equal(x, v[0]);
+        Assert.Equal(y, v[1]);
+    }
+
+    [Theory, AutoData]
+    public void VectorIndexer_Throws(float x, float y, float z)
+    {
+        var v = new Vector3(x, y, z);
+        Assert.Throws<IndexOutOfRangeException>(() => v[3]);
+    }
+
+    [Theory, AutoData]
+    public void VectorIndexerSet(float y)
+    {
+        var v = Vector3.Zero();
+        v[1] = y;
+        Assert.Equal(y, v[1]);
+    }
+
+    [Theory, AutoData]
+    public void VectorIndexerSet_Throws(float x)
+    {
+        var v = Vector3.Zero();
+        Assert.Throws<IndexOutOfRangeException>(() => v[3] = x);
+    }
+
+    [Theory, AutoData]
+    public void MatrixIndexer1x3(float x, float y, float z)
+    {
+        var v = new Vector3(x, y, z);
+        var m = v as IMatrix<Vector3, Vector1, Vector3>;
+        Assert.Equal(x, m[0, 0]);
+    }
+
+    [Theory, AutoData]
+    public void MatrixIndexer1x3_Throws(float x, float y, float z)
+    {
+        var v = new Vector3(x, y, z);
+        var m = v as IMatrix<Vector3, Vector1, Vector3>;
+        Assert.Throws<ArgumentOutOfRangeException>(() => m[3, 2]);
+    }
+
+    [Theory, AutoData]
+    public void Matrix1x3_Column(float x, float y, float z)
+    {
+        var v = new Vector3(x, y, z) as IMatrix<Vector3, Vector1, Vector3>;
+        var col = v.Column(0);
+        Assert.Equal([x, y, z], col.Components);
+    }
+
+    [Theory, AutoData]
+    public void Matrix1x3_Row(float x, float y, float z)
+    {
+        var v = new Vector3(x, y, z) as IMatrix<Vector3, Vector1, Vector3>;
+        var row = v.Row(0);
+        Assert.Equal([x], row.Components);
+    }
+
+    [Theory, AutoData]
+    public void MatrixIndexer3x1(float x, float y, float z)
+    {
+        var v = new Vector3(x, y, z);
+        var m = v as IMatrix<Vector3, Vector3, Vector1>;
+        Assert.Equal(x, m[0, 0]);
+    }
+
+    [Theory, AutoData]
+    public void MatrixIndexer3x1_Throws(float x, float y, float z)
+    {
+        var v = new Vector3(x, y, z);
+        var m = v as IMatrix<Vector3, Vector3, Vector1>;
+        Assert.Throws<ArgumentOutOfRangeException>(() => m[3, 2]);
+    }
+
+    [Theory, AutoData]
+    public void Matrix3x1_Column(float x, float y, float z)
+    {
+        var v = new Vector3(x, y, z) as IMatrix<Vector3, Vector3, Vector1>;
+        var col = v.Column(0);
+        Assert.Equal([x], col.Components);
+    }
+
+    [Theory, AutoData]
+    public void Matrix3x1_Row(float x, float y, float z)
+    {
+        var v = new Vector3(x, y, z) as IMatrix<Vector3, Vector3, Vector1>;
+        var row = v.Row(0);
+        Assert.Equal([x, y, z], row.Components);
     }
 }

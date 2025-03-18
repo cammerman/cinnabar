@@ -227,7 +227,7 @@ namespace Cinnabar.GameMath
         Vector3 IRowMatrix.Row(int row)
         {
             ArgumentOutOfRangeException.ThrowIfNotEqual(row, 0, nameof(row));
-            return new Vector3(_x, _y, _x);
+            return new Vector3(_x, _y, _z);
         }
     }
 }
