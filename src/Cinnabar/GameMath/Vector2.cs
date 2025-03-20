@@ -51,18 +51,18 @@ namespace Cinnabar.GameMath
 
         public int Dimension => 2;
 
-        MatrixOrder IColumnMatrix.Order => _columnMatrixOrder;
+        MatrixOrder IMatrix<Vector2, Vector1>.Order => _columnMatrixOrder;
 
-        float IColumnMatrix.this[int column, int row] {
+        float IMatrix<Vector2, Vector1>.this[int column, int row] {
             get {
                 ArgumentOutOfRangeException.ThrowIfNotEqual(column, 0, nameof(column));
                 return this[row];
             }
         }
         
-        MatrixOrder IRowMatrix.Order => _rowMatrixOrder;
+        MatrixOrder IMatrix<Vector1, Vector2>.Order => _rowMatrixOrder;
 
-        float IRowMatrix.this[int column, int row] {
+        float IMatrix<Vector1, Vector2>.this[int column, int row] {
             get {
                 ArgumentOutOfRangeException.ThrowIfNotEqual(row, 0, nameof(row));
                 return this[column];
@@ -145,26 +145,47 @@ namespace Cinnabar.GameMath
             return new Vector2(0, 0);
         }
 
-        Vector2 IColumnMatrix.Column(int column)
+        Vector2 IMatrix<Vector2, Vector1>.Column(int column)
         {
             ArgumentOutOfRangeException.ThrowIfNotEqual(column, 0, nameof(column));
             return new Vector2(this);
         }
 
-        Vector1 IColumnMatrix.Row(int row)
+        Vector1 IMatrix<Vector2, Vector1>.Row(int row)
         {
             return new Vector1(this[row]);
         }
 
-        Vector1 IRowMatrix.Column(int column)
+        Vector1 IMatrix<Vector1, Vector2>.Column(int column)
         {
             return new Vector1(this[column]);
         }
 
-        Vector2 IRowMatrix.Row(int row)
+        Vector2 IMatrix<Vector1, Vector2>.Row(int row)
         {
             ArgumentOutOfRangeException.ThrowIfNotEqual(row, 0, nameof(row));
             return new Vector2(this);
+        }
+
+        IMatrix<Vector2, TOtherRowVector> IColumnMatrix.Multiply<TOther, TOtherRowVector>(TOther other)
+        {
+            var otherRowSize = other.Order.Columns;
+            var col1 = other.Column(0).Components;
+            var col2 = other.Column(1).Components;
+            var col3 = other.Column(2).Components;
+            var col4 = other.Column(3).Components;
+
+            // The above is not going to throw for any matrix order other than 2x4. Will need to ditch the switch
+
+            IMatrix<Vector2, TOtherRowVector>? result = otherRowSize switch {
+                1 => new Vector1(X * col1[0] + Y * col1[1]) as IMatrix<Vector2, TOtherRowVector>,
+                2 => new Vector2(X * col1[0] + Y * col1[1], X * col2[0] + Y * col2[1]) as IMatrix<Vector2, TOtherRowVector>,
+                3 => new Vector3(X * col1[0] + Y * col1[1], X * col2[0] + Y * col2[1], X * col3[0] + Y * col3[1]) as IMatrix<Vector2, TOtherRowVector>,
+                4 => new Vector4(X * col1[0] + Y * col1[1], X * col2[0] + Y * col2[1], X * col3[0] + Y * col3[1], X * col4[0] + Y * col4[1]) as IMatrix<Vector2, TOtherRowVector>,
+                _ => throw new ArgumentException("Unsupported matrix order.", nameof(other))
+            };
+
+            return result!;
         }
 
         public static Vector2 operator+(Vector2 self)

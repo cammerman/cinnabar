@@ -1,4 +1,5 @@
 
+using System.Collections;
 using System.Collections.ObjectModel;
 
 namespace Cinnabar.GameMath;
@@ -102,16 +103,32 @@ public struct Vector1: IVector<Vector1>, IMatrix<Vector1, Vector1, Vector1>
         return new Vector1(0);
     }
 
-    Vector1 IMatrix<Vector1, Vector1, Vector1>.Column(int column)
+    Vector1 IMatrix<Vector1, Vector1>.Column(int column)
     {
         ArgumentOutOfRangeException.ThrowIfNotEqual(column, 0);
         return new Vector1(_x);
     }
 
-    Vector1 IMatrix<Vector1, Vector1, Vector1>.Row(int row)
+    Vector1 IMatrix<Vector1, Vector1>.Row(int row)
     {
         ArgumentOutOfRangeException.ThrowIfNotEqual(row, 0);
         return new Vector1(_x);
+    }
+
+    IMatrix<Vector1, TOtherRowVector> IMatrix<Vector1, Vector1, Vector1>.Multiply<TOther, TOtherRowVector>(TOther other)
+    {
+        var otherRowSize = other.Order.Columns;
+        var otherRow = other.Row(0).Components;
+
+        IMatrix<Vector1, TOtherRowVector>? result = otherRowSize switch {
+            1 => new Vector1(X * otherRow[0]) as IMatrix<Vector1, TOtherRowVector>,
+            2 => new Vector2(X * otherRow[0], X * otherRow[1]) as IMatrix<Vector1, TOtherRowVector>,
+            3 => new Vector3(X * otherRow[0], X * otherRow[1], X * otherRow[2]) as IMatrix<Vector1, TOtherRowVector>,
+            4 => new Vector4(X * otherRow[0], X * otherRow[1], X * otherRow[2], X * otherRow[3]) as IMatrix<Vector1, TOtherRowVector>,
+            _ => throw new ArgumentException("Unsupported matrix order.", nameof(other))
+        };
+
+        return result!;
     }
 
     public static Vector1 operator+(Vector1 self)

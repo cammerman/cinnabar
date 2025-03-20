@@ -1,7 +1,7 @@
 namespace Cinnabar.GameMath;
 
-public interface ISquareMatrix<TMatrix>
-    where TMatrix: IMatrix
+public interface ISquareMatrix<TVector>
+    where TVector: IVector<TVector>
 {
-    public abstract static TMatrix Identity();
+    public abstract static IMatrix<TVector, TVector> Identity();
 }
