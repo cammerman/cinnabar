@@ -10,9 +10,9 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/Cinnabar.Tests/bin/Debug/net8.0/Cinnabar.Tests.dll",
+            "program": "${workspaceFolder}/src/Cinnabar.Tests/bin/Debug/net9.0/Cinnabar.Tests.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/Cinnabar.Tests",
+            "cwd": "${workspaceFolder}/src/Cinnabar.Tests",
             // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
             "console": "internalConsole",
             "stopAtEntry": false

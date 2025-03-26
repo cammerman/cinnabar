@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using System.Numerics;
 
 namespace Cinnabar.GameMath;
 
@@ -8,6 +9,8 @@ public interface IVector
     double Magnitude { get; }
     int Dimension { get; }
     float this[int index] { get; }
+
+
 }
 
 public interface IVector<TVector>: IVector
@@ -26,4 +29,10 @@ public interface IVector<TVector>: IVector
     public abstract static TVector operator*(TVector self, float other);
     public abstract static TVector operator*(float other, TVector self);
     public abstract static TVector operator/(TVector self, float other);
+
+    public TVector Negate();
+    public TVector Normalize();
+
+    // IMatrix<Vector1, TVector> AsRowMatrix();
+    // IMatrix<TVector, Vector1> AsColumnMatrix();
 }

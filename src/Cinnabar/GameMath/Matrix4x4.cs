@@ -1,3 +1,3 @@
-namespace Cinnabar.GameMath;
+// namespace Cinnabar.GameMath;
 
-public class Matrix4x4 {}
+// public class Matrix4x4 {}

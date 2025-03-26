@@ -4,16 +4,17 @@ using System.Windows.Markup;
 
 namespace Cinnabar.GameMath
 {
-    using IColumnMatrix = IMatrix<Vector2, Vector1, Vector2>;
-    using IRowMatrix = IMatrix<Vector2, Vector2, Vector1>;
+    // using IColumnMatrix = IMatrix<Vector2, Vector1, Vector2>;
+    // using IRowMatrix = IMatrix<Vector2, Vector2, Vector1>;
 
-    public struct Vector2:
-        IVector<Vector2>,
-        IColumnMatrix,
-        IRowMatrix
+    public partial struct Vector2
+    // :
+    //     IVector<Vector2>,
+    //     IColumnMatrix,
+    //     IRowMatrix
     {
-        private static readonly MatrixOrder _columnMatrixOrder = new MatrixOrder(2, 1);
-        private static readonly MatrixOrder _rowMatrixOrder = new MatrixOrder(1, 2);
+        // private static readonly MatrixOrder _columnMatrixOrder = new MatrixOrder(2, 1);
+        // private static readonly MatrixOrder _rowMatrixOrder = new MatrixOrder(1, 2);
 
         private float _x;
         private float _y;
@@ -51,23 +52,23 @@ namespace Cinnabar.GameMath
 
         public int Dimension => 2;
 
-        MatrixOrder IMatrix<Vector2, Vector1>.Order => _columnMatrixOrder;
+        // MatrixOrder IMatrix<Vector2, Vector1>.Order => _columnMatrixOrder;
 
-        float IMatrix<Vector2, Vector1>.this[int column, int row] {
-            get {
-                ArgumentOutOfRangeException.ThrowIfNotEqual(column, 0, nameof(column));
-                return this[row];
-            }
-        }
+        // float IMatrix<Vector2, Vector1>.this[int column, int row] {
+        //     get {
+        //         ArgumentOutOfRangeException.ThrowIfNotEqual(column, 0, nameof(column));
+        //         return this[row];
+        //     }
+        // }
         
-        MatrixOrder IMatrix<Vector1, Vector2>.Order => _rowMatrixOrder;
+        // MatrixOrder IMatrix<Vector1, Vector2>.Order => _rowMatrixOrder;
 
-        float IMatrix<Vector1, Vector2>.this[int column, int row] {
-            get {
-                ArgumentOutOfRangeException.ThrowIfNotEqual(row, 0, nameof(row));
-                return this[column];
-            }
-        }
+        // float IMatrix<Vector1, Vector2>.this[int column, int row] {
+        //     get {
+        //         ArgumentOutOfRangeException.ThrowIfNotEqual(row, 0, nameof(row));
+        //         return this[column];
+        //     }
+        // }
 
         public float this[int index]
         {
@@ -140,53 +141,100 @@ namespace Cinnabar.GameMath
             return new Vector2(-_x, -_y);
         }
 
+        public Vector2 Normalize()
+        {
+            return new Vector2(
+                (float)(_x / Magnitude),
+                (float)(_y / Magnitude));
+        }
+
         public static Vector2 Zero()
         {
             return new Vector2(0, 0);
         }
 
-        Vector2 IMatrix<Vector2, Vector1>.Column(int column)
+        public static Vector2 UnitX()
         {
-            ArgumentOutOfRangeException.ThrowIfNotEqual(column, 0, nameof(column));
-            return new Vector2(this);
+            return new Vector2(1, 0);
         }
 
-        Vector1 IMatrix<Vector2, Vector1>.Row(int row)
+        public static Vector2 UnitY()
         {
-            return new Vector1(this[row]);
+            return new Vector2(0, 1);
         }
 
-        Vector1 IMatrix<Vector1, Vector2>.Column(int column)
-        {
-            return new Vector1(this[column]);
-        }
+        // Vector2 IMatrix<Vector2, Vector1>.Column(int column)
+        // {
+        //     ArgumentOutOfRangeException.ThrowIfNotEqual(column, 0, nameof(column));
+        //     return new Vector2(this);
+        // }
 
-        Vector2 IMatrix<Vector1, Vector2>.Row(int row)
-        {
-            ArgumentOutOfRangeException.ThrowIfNotEqual(row, 0, nameof(row));
-            return new Vector2(this);
-        }
+        // Vector1 IMatrix<Vector2, Vector1>.Row(int row)
+        // {
+        //     return new Vector1(this[row]);
+        // }
 
-        IMatrix<Vector2, TOtherRowVector> IColumnMatrix.Multiply<TOther, TOtherRowVector>(TOther other)
-        {
-            var otherRowSize = other.Order.Columns;
-            var col1 = other.Column(0).Components;
-            var col2 = other.Column(1).Components;
-            var col3 = other.Column(2).Components;
-            var col4 = other.Column(3).Components;
+        // Vector1 IMatrix<Vector1, Vector2>.Column(int column)
+        // {
+        //     return new Vector1(this[column]);
+        // }
 
-            // The above is not going to throw for any matrix order other than 2x4. Will need to ditch the switch
+        // Vector2 IMatrix<Vector1, Vector2>.Row(int row)
+        // {
+        //     ArgumentOutOfRangeException.ThrowIfNotEqual(row, 0, nameof(row));
+        //     return new Vector2(this);
+        // }
 
-            IMatrix<Vector2, TOtherRowVector>? result = otherRowSize switch {
-                1 => new Vector1(X * col1[0] + Y * col1[1]) as IMatrix<Vector2, TOtherRowVector>,
-                2 => new Vector2(X * col1[0] + Y * col1[1], X * col2[0] + Y * col2[1]) as IMatrix<Vector2, TOtherRowVector>,
-                3 => new Vector3(X * col1[0] + Y * col1[1], X * col2[0] + Y * col2[1], X * col3[0] + Y * col3[1]) as IMatrix<Vector2, TOtherRowVector>,
-                4 => new Vector4(X * col1[0] + Y * col1[1], X * col2[0] + Y * col2[1], X * col3[0] + Y * col3[1], X * col4[0] + Y * col4[1]) as IMatrix<Vector2, TOtherRowVector>,
-                _ => throw new ArgumentException("Unsupported matrix order.", nameof(other))
-            };
+        // IMatrix<Vector2, TOtherRowVector> IColumnMatrix.Multiply<TOther, TOtherRowVector>(TOther other)
+        // {
+        //     var otherRowSize = other.Order.Columns;
+        //     var col1 = other.Column(0).Components;
+        //     var col2 = other.Column(1).Components;
+        //     var col3 = other.Column(2).Components;
+        //     var col4 = other.Column(3).Components;
 
-            return result!;
-        }
+        //     // The above is not going to throw for any matrix order other than 2x4. Will need to ditch the switch
+
+        //     IMatrix<Vector2, TOtherRowVector>? result = otherRowSize switch {
+        //         1 => new Vector1(X * col1[0] + Y * col1[1]) as IMatrix<Vector2, TOtherRowVector>,
+        //         2 => new Vector2(X * col1[0] + Y * col1[1], X * col2[0] + Y * col2[1]) as IMatrix<Vector2, TOtherRowVector>,
+        //         3 => new Vector3(X * col1[0] + Y * col1[1], X * col2[0] + Y * col2[1], X * col3[0] + Y * col3[1]) as IMatrix<Vector2, TOtherRowVector>,
+        //         4 => new Vector4(X * col1[0] + Y * col1[1], X * col2[0] + Y * col2[1], X * col3[0] + Y * col3[1], X * col4[0] + Y * col4[1]) as IMatrix<Vector2, TOtherRowVector>,
+        //         _ => throw new ArgumentException("Unsupported matrix order.", nameof(other))
+        //     };
+
+        //     return result!;
+        // }
+        
+        // Vector1 MultiplyToVector(Matrix2x1 other)
+        // {
+        //     var otherCol = other.Column(0).Components;
+        //     var result = new Vector1(X * otherCol[0] + Y * otherCol[1]);
+        //     return result;
+        // }
+
+        // Matrix1x1 MultiplyToMatrix(Matrix2x1 other)
+        // {
+        //     var otherCol = other.Column(0).Components;
+        //     var result = new Matrix1x1(X * otherCol[0] + Y * otherCol[1]);
+        //     return result;
+        // }
+
+        // public Vector2 MultiplyToVector(Matrix2x2 other)
+        // {
+        //     var col1 = other.Column(0).Components;
+        //     var col2 = other.Column(1).Components;
+        //     var result = new Vector2(X * col1[0] + Y * col1[1], X * col2[0] + Y * col2[1]);
+        //     return result;
+        // }
+
+        // public Matrix1x2 MultiplyToMatrix(Matrix2x2 other)
+        // {
+        //     var col1 = other.Column(0).Components;
+        //     var col2 = other.Column(1).Components;
+        //     var result = new Matrix1x2(X * col1[0] + Y * col1[1], X * col2[0] + Y * col2[1]);
+        //     return result;
+        // }
 
         public static Vector2 operator+(Vector2 self)
         {

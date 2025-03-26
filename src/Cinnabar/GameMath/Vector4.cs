@@ -2,17 +2,9 @@ using System.Collections.ObjectModel;
 
 namespace Cinnabar.GameMath
 {
-    using IColumnMatrix = IMatrix<Vector4, Vector1, Vector4>;
-    using IRowMatrix = IMatrix<Vector4, Vector4, Vector1>;
 
-    public struct Vector4:
-        IVector<Vector4>,
-        IColumnMatrix,
-        IRowMatrix
+    public struct Vector4
     {
-        private static MatrixOrder _rowMatrixOrder = new MatrixOrder(1, 4);
-        private static MatrixOrder _columnMatrixOrder = new MatrixOrder(4, 1);
-
         private float _w;
         private float _x;
         private float _y;

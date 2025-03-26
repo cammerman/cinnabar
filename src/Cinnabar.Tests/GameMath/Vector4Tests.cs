@@ -226,67 +226,67 @@ public class Vector4Tests
         Assert.Throws<IndexOutOfRangeException>(() => v[5] = x);
     }
 
-    [Theory, AutoData]
-    public void MatrixIndexer1x4(float w, float x, float y, float z)
-    {
-        var v = new Vector4(w, x, y, z);
-        var m = v as IMatrix<Vector4, Vector1, Vector4>;
-        Assert.Equal(w, m[0, 0]);
-    }
+    // [Theory, AutoData]
+    // public void MatrixIndexer1x4(float w, float x, float y, float z)
+    // {
+    //     var v = new Vector4(w, x, y, z);
+    //     var m = v as IMatrix<Vector4, Vector1, Vector4>;
+    //     Assert.Equal(w, m[0, 0]);
+    // }
 
-    [Theory, AutoData]
-    public void MatrixIndexer1x4_Throws(float w, float x, float y, float z)
-    {
-        var v = new Vector4(w, x, y, z);
-        var m = v as IMatrix<Vector4, Vector1, Vector4>;
-        Assert.Throws<ArgumentOutOfRangeException>(() => m[3, 2]);
-    }
+    // [Theory, AutoData]
+    // public void MatrixIndexer1x4_Throws(float w, float x, float y, float z)
+    // {
+    //     var v = new Vector4(w, x, y, z);
+    //     var m = v as IMatrix<Vector4, Vector1, Vector4>;
+    //     Assert.Throws<ArgumentOutOfRangeException>(() => m[3, 2]);
+    // }
 
-    [Theory, AutoData]
-    public void Matrix1x4_Column(float w, float x, float y, float z)
-    {
-        var v = new Vector4(w, x, y, z) as IMatrix<Vector4, Vector1, Vector4>;
-        var col = v.Column(0);
-        Assert.Equal([w, x, y, z], col.Components);
-    }
+    // [Theory, AutoData]
+    // public void Matrix1x4_Column(float w, float x, float y, float z)
+    // {
+    //     var v = new Vector4(w, x, y, z) as IMatrix<Vector4, Vector1, Vector4>;
+    //     var col = v.Column(0);
+    //     Assert.Equal([w, x, y, z], col.Components);
+    // }
 
-    [Theory, AutoData]
-    public void Matrix1x4_Row(float w, float x, float y, float z)
-    {
-        var v = new Vector4(w, x, y, z) as IMatrix<Vector4, Vector1, Vector4>;
-        var row = v.Row(0);
-        Assert.Equal([w], row.Components);
-    }
+    // [Theory, AutoData]
+    // public void Matrix1x4_Row(float w, float x, float y, float z)
+    // {
+    //     var v = new Vector4(w, x, y, z) as IMatrix<Vector4, Vector1, Vector4>;
+    //     var row = v.Row(0);
+    //     Assert.Equal([w], row.Components);
+    // }
 
-    [Theory, AutoData]
-    public void MatrixIndexer4x1(float w, float x, float y, float z)
-    {
-        var v = new Vector4(w, x, y, z);
-        var m = v as IMatrix<Vector4, Vector4, Vector1>;
-        Assert.Equal(w, m[0, 0]);
-    }
+    // [Theory, AutoData]
+    // public void MatrixIndexer4x1(float w, float x, float y, float z)
+    // {
+    //     var v = new Vector4(w, x, y, z);
+    //     var m = v as IMatrix<Vector4, Vector4, Vector1>;
+    //     Assert.Equal(w, m[0, 0]);
+    // }
 
-    [Theory, AutoData]
-    public void MatrixIndexer4x1_Throws(float w, float x, float y, float z)
-    {
-        var v = new Vector4(w, x, y, z);
-        var m = v as IMatrix<Vector4, Vector4, Vector1>;
-        Assert.Throws<ArgumentOutOfRangeException>(() => m[3, 2]);
-    }
+    // [Theory, AutoData]
+    // public void MatrixIndexer4x1_Throws(float w, float x, float y, float z)
+    // {
+    //     var v = new Vector4(w, x, y, z);
+    //     var m = v as IMatrix<Vector4, Vector4, Vector1>;
+    //     Assert.Throws<ArgumentOutOfRangeException>(() => m[3, 2]);
+    // }
 
-    [Theory, AutoData]
-    public void Matrix4x1_Column(float w, float x, float y, float z)
-    {
-        var v = new Vector4(w, x, y, z) as IMatrix<Vector4, Vector4, Vector1>;
-        var col = v.Column(0);
-        Assert.Equal([w], col.Components);
-    }
+    // [Theory, AutoData]
+    // public void Matrix4x1_Column(float w, float x, float y, float z)
+    // {
+    //     var v = new Vector4(w, x, y, z) as IMatrix<Vector4, Vector4, Vector1>;
+    //     var col = v.Column(0);
+    //     Assert.Equal([w], col.Components);
+    // }
 
-    [Theory, AutoData]
-    public void Matrix4x1_Row(float w, float x, float y, float z)
-    {
-        var v = new Vector4(w, x, y, z) as IMatrix<Vector4, Vector4, Vector1>;
-        var row = v.Row(0);
-        Assert.Equal([w, x, y, z], row.Components);
-    }
+    // [Theory, AutoData]
+    // public void Matrix4x1_Row(float w, float x, float y, float z)
+    // {
+    //     var v = new Vector4(w, x, y, z) as IMatrix<Vector4, Vector4, Vector1>;
+    //     var row = v.Row(0);
+    //     Assert.Equal([w, x, y, z], row.Components);
+    // }
 }
