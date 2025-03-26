@@ -2,7 +2,6 @@ using System.Collections.ObjectModel;
 
 namespace Cinnabar.GameMath
 {
-
     public struct Vector4
     {
         private float _w;
@@ -60,23 +59,23 @@ namespace Cinnabar.GameMath
 
         public int Dimension => 4;
 
-        MatrixOrder IColumnMatrix.Order => _columnMatrixOrder;
+        // MatrixOrder IColumnMatrix.Order => _columnMatrixOrder;
 
-        float IColumnMatrix.this[int column, int row] {
-            get {
-                ArgumentOutOfRangeException.ThrowIfNotEqual(column, 0, nameof(column));
-                return this[row];
-            }            
-        }
+        // float IColumnMatrix.this[int column, int row] {
+        //     get {
+        //         ArgumentOutOfRangeException.ThrowIfNotEqual(column, 0, nameof(column));
+        //         return this[row];
+        //     }            
+        // }
         
-        MatrixOrder IRowMatrix.Order => _rowMatrixOrder;
+        // MatrixOrder IRowMatrix.Order => _rowMatrixOrder;
 
-        float IRowMatrix.this[int column, int row] {
-            get {
-                ArgumentOutOfRangeException.ThrowIfNotEqual(row, 0, nameof(row));
-                return this[column];
-            }
-        }
+        // float IRowMatrix.this[int column, int row] {
+        //     get {
+        //         ArgumentOutOfRangeException.ThrowIfNotEqual(row, 0, nameof(row));
+        //         return this[column];
+        //     }
+        // }
 
         public float this[int index]
         {
@@ -125,6 +124,40 @@ namespace Cinnabar.GameMath
             return new Vector4(-_w, -_x, -_y, -_z);
         }
 
+        public Vector4 Normalize()
+        {
+            return new Vector4(
+                (float)(_w / Magnitude),
+                (float)(_x / Magnitude),
+                (float)(_y / Magnitude),
+                (float)(_z / Magnitude));
+        }
+
+        public static Vector4 Zero()
+        {
+            return new Vector4(0, 0, 0, 0);
+        }
+
+        public static Vector4 UnitW()
+        {
+            return new Vector4(1, 0, 0, 0);
+        }
+
+        public static Vector4 UnitX()
+        {
+            return new Vector4(0, 1, 0, 0);
+        }
+
+        public static Vector4 UnitY()
+        {
+            return new Vector4(0, 0, 1, 0);
+        }
+
+        public static Vector4 UnitZ()
+        {
+            return new Vector4(0, 0, 0, 1);
+        }
+
         public Vector4 Add(Vector4 other)
         {
             return new Vector4(
@@ -166,46 +199,41 @@ namespace Cinnabar.GameMath
             return this.W * other.W + this.X * other.X + this.Y * other.Y + this.Z * other.Z;
         }
 
-        public static Vector4 Zero()
-        {
-            return new Vector4(0, 0, 0, 0);
-        }
+        // Vector4 IColumnMatrix.Column(int column)
+        // {
+        //     ArgumentOutOfRangeException.ThrowIfNotEqual(column, 0, nameof(column));
+        //     return new Vector4(_w, _x, _y, _z);
+        // }
 
-        Vector4 IColumnMatrix.Column(int column)
-        {
-            ArgumentOutOfRangeException.ThrowIfNotEqual(column, 0, nameof(column));
-            return new Vector4(_w, _x, _y, _z);
-        }
-
-        Vector1 IColumnMatrix.Row(int row)
-        {
-            return new Vector1(
-                row switch {
-                    0 => _w,
-                    1 => _x,
-                    2 => _y,
-                    3 => _z,
-                    _ => throw new ArgumentOutOfRangeException(nameof(row))
-                });
-        }
+        // Vector1 IColumnMatrix.Row(int row)
+        // {
+        //     return new Vector1(
+        //         row switch {
+        //             0 => _w,
+        //             1 => _x,
+        //             2 => _y,
+        //             3 => _z,
+        //             _ => throw new ArgumentOutOfRangeException(nameof(row))
+        //         });
+        // }
         
-        Vector1 IRowMatrix.Column(int column)
-        {
-            return new Vector1(
-                column switch {
-                    0 => _w,
-                    1 => _x,
-                    2 => _y,
-                    3 => _z,
-                    _ => throw new ArgumentOutOfRangeException(nameof(column))
-                });
-        }
+        // Vector1 IRowMatrix.Column(int column)
+        // {
+        //     return new Vector1(
+        //         column switch {
+        //             0 => _w,
+        //             1 => _x,
+        //             2 => _y,
+        //             3 => _z,
+        //             _ => throw new ArgumentOutOfRangeException(nameof(column))
+        //         });
+        // }
 
-        Vector4 IRowMatrix.Row(int row)
-        {
-            ArgumentOutOfRangeException.ThrowIfNotEqual(row, 0, nameof(row));
-            return new Vector4(_w, _x, _y, _z);
-        }
+        // Vector4 IRowMatrix.Row(int row)
+        // {
+        //     ArgumentOutOfRangeException.ThrowIfNotEqual(row, 0, nameof(row));
+        //     return new Vector4(_w, _x, _y, _z);
+        // }
 
         public static Vector4 operator+(Vector4 self)
         {

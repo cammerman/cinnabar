@@ -66,6 +66,13 @@ public class Vector4Tests
         Assert.Equal(z, v2.Z);
     }
 
+    [Theory, AutoData]
+    public void Dimension(float w, float x, float y, float z)
+    {
+        var v = new Vector4(w, x, y, z);
+        Assert.Equal(4, v.Dimension);
+    }
+
     [Theory]
     [MemberData(nameof(GetSingleVectors))]
     public void UnaryPlus(float w, float x, float y, float z)
@@ -83,11 +90,81 @@ public class Vector4Tests
     public void Negate(float w, float x, float y, float z)
     {
         var v = new Vector4(w, x, y, z);
+        var result = v.Negate();
+        Assert.Equal(-w, result.W);
+        Assert.Equal(-x, result.X);
+        Assert.Equal(-y, result.Y);
+        Assert.Equal(-z, result.Z);
+    }
+
+    [Theory]
+    [MemberData(nameof(GetSingleVectors))]
+    public void NegateOperator(float w, float x, float y, float z)
+    {
+        var v = new Vector4(w, x, y, z);
         var result = -v;
         Assert.Equal(-w, result.W);
         Assert.Equal(-x, result.X);
         Assert.Equal(-y, result.Y);
         Assert.Equal(-z, result.Z);
+    }
+
+    [Theory]
+    [MemberData(nameof(GetSingleVectors))]
+    public void Normalize(float w, float x, float y, float z)
+    {
+        var v = new Vector4(w, x, y, z);
+        var result = v.Normalize();
+        Assert.Equal(1, result.Magnitude, 0.01);
+    }
+
+    [Fact]
+    public void UnitW()
+    {
+        var result = Vector4.UnitW();
+        Assert.Equal(1, result.W);
+        Assert.Equal(0, result.X);
+        Assert.Equal(0, result.Y);
+        Assert.Equal(0, result.Z);
+    }
+
+    [Fact]
+    public void UnitX()
+    {
+        var result = Vector4.UnitX();
+        Assert.Equal(0, result.W);
+        Assert.Equal(1, result.X);
+        Assert.Equal(0, result.Y);
+        Assert.Equal(0, result.Z);
+    }
+
+    [Fact]
+    public void UnitY()
+    {
+        var result = Vector4.UnitY();
+        Assert.Equal(0, result.W);
+        Assert.Equal(0, result.X);
+        Assert.Equal(1, result.Y);
+        Assert.Equal(0, result.Z);
+    }
+
+    [Fact]
+    public void UnitZ()
+    {
+        var result = Vector4.UnitZ();
+        Assert.Equal(0, result.W);
+        Assert.Equal(0, result.X);
+        Assert.Equal(0, result.Y);
+        Assert.Equal(1, result.Z);
+    }
+
+    [Fact]
+    public void Zero()
+    {
+        var result = Vector4.Zero();
+        Assert.Equal(0, result.X);
+        Assert.Equal(0, result.Y);
+        Assert.Equal(0, result.Z);
     }
 
     [Theory]
@@ -192,6 +269,50 @@ public class Vector4Tests
             expected,
             v.Magnitude,
             0.001 * expected);
+    }
+
+    [Theory, AutoData]
+    public void UpdateWMagnitude(float w, float x, float y, float z, float w2)
+    {
+        var v = new Vector4(w, x, y, z);
+        v.W = w2;
+        Assert.Equal(
+            Math.Sqrt(w2 * w2 + x * x + y * y + z * z),
+            v.Magnitude,
+            0.01);
+    }
+
+    [Theory, AutoData]
+    public void UpdateXMagnitude(float w, float x, float y, float z, float x2)
+    {
+        var v = new Vector4(w, x, y, z);
+        v.X = x2;
+        Assert.Equal(
+            Math.Sqrt(w * w + x2 * x2 + y * y + z * z),
+            v.Magnitude,
+            0.01);
+    }
+
+    [Theory, AutoData]
+    public void UpdateYMagnitude(float w, float x, float y, float y2, float z)
+    {
+        var v = new Vector4(w, x, y, z);
+        v.Y = y2;
+        Assert.Equal(
+            Math.Sqrt(w * w + x * x + y2 * y2 + z * z),
+            v.Magnitude,
+            0.01);
+    }
+
+    [Theory, AutoData]
+    public void UpdateZMagnitude(float w, float x, float y, float z, float z2)
+    {
+        var v = new Vector4(w, x, y, z);
+        v.Z = z2;
+        Assert.Equal(
+            Math.Sqrt(w * w + x * x + y * y + z2 * z2),
+            v.Magnitude,
+            0.01);
     }
 
     [Theory, AutoData]
